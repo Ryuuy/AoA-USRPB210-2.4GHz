@@ -6,7 +6,7 @@ import time
 # --- 1. 参数与配置 ---
 SDR_ARGS = "serial=321D889,num_recv_frames=1024" # 您的B210序列号, 并增加了接收缓冲区
 SAMPLE_RATE = 4e6    # 采样率 (4 MS/s)
-CENTER_FREQ = 2.41e9 # 中心频率
+CENTER_FREQ = 2.455e9 # 中心频率
 GAIN = 50            # 增益
 NUM_CHANNELS = 2     # 双通道
 FILENAME = "2ch_iq_data.bin" # 输出文件名
