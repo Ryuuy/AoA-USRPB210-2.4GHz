@@ -1,1 +1,31 @@
+# Large binary files
 2ch_iq_data.bin
+*.bin
+
+# Data files
+*.dat
+*.csv
+*.txt
+
+# Image files (if they get too large)
+*.png
+*.jpg
+*.jpeg
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+sdr_env/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
