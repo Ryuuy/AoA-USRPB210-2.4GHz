@@ -219,8 +219,6 @@ def main():
     FILENAME = "2ch_iq_data.bin"
     SAMPLE_RATE = 4e6
     OUTPUT_DIR = "results_v6_cfo"
-    # TEMP: analyze only pair #1 and print its overall phase and duration
-    ONLY_PAIR_INDEX = 1  # 1-based index; set to None to analyze all
     
     # Detection & Segmentation Parameters
     COARSE_THRESHOLD_DB = 14.0
@@ -248,26 +246,7 @@ def main():
     pairs = pair_bursts(bursts0, bursts1, max_center_diff=int(0.3e-3 * SAMPLE_RATE))
     print(f"Found {len(pairs)} initial coarse frames.")
 
-    # TEMP path: if ONLY_PAIR_INDEX is set, report only that pair's overall phase and duration
-    if ONLY_PAIR_INDEX is not None:
-        if len(pairs) < ONLY_PAIR_INDEX:
-            print(f"Requested pair #{ONLY_PAIR_INDEX} not available (only {len(pairs)} pairs).")
-            return
-        b0, b1 = pairs[ONLY_PAIR_INDEX - 1]
-        s, e = max(b0[0], b1[0]), min(b0[1], b1[1])
-        total_len = e - s + 1
-        dur_sec = total_len / SAMPLE_RATE
-        seg0, seg1 = ch0[s:e+1], ch1[s:e+1]
-        phase_deg, cfo_hz, mean_corr_power = compute_phase_with_cfo_correction(seg0, seg1, SAMPLE_RATE)
-        print("-" * 60)
-        print(f"Pair #{ONLY_PAIR_INDEX}: overlap=[{s},{e}], samples={total_len}, duration={dur_sec*1e6:.2f} us")
-        print(f"Overall CFO-corrected phase (Ch0 vs Ch1): {phase_deg:.2f} deg")
-        print(f"Estimated CFO: {cfo_hz:.1f} Hz")
-        print(f"Mean correlation power (|s0|*|s1| mean): {mean_corr_power:.4f}")
-        print("-" * 60)
-        return
-
-    # Step 3: Iterate, segment, filter, and analyze (all pairs)
+    # Step 3: Iterate, segment, filter, and analyze
     corrected_phases, cfo_estimates, correlations = [], [], []
 
     for pidx, (b0, b1) in enumerate(pairs):
